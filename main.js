@@ -26,6 +26,17 @@ function calculatebmi() {
     category = "Obese";
   }
 
+  // Show result in browser
   document.getElementById("result").innerHTML = 
     `Your BMI is <strong>${bmi.toFixed(2)}</strong> (${category})`;
+
+  // Send BMI to backend
+  fetch("http://localhost:5000/save-bmi", {   // use your backend port
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ weight, height: heightCm, bmi })
+  })
+  .then(response => response.json())
+  .then(data => console.log("Backend response:", data))
+  .catch(err => console.error("Error saving BMI:", err));
 }
